@@ -32,13 +32,7 @@ def scrapeMarsNews():
     newsTitle = newsTitleList[1].text
     newsText = newsTextList[0].text
 
-    marsNews = {'Title': newTitle, 'Text': newText}
-
-    print(newsTitle)
-    print('--------------------------')
-    print(newsText)
-
-    browser.quit()
+    marsNews = {'Title': newsTitle, 'Text': newsText}
 
     return marsNews
 
@@ -59,9 +53,6 @@ def scrapeSpaceImages():
     relative_image_path = soup.find('a', {'class':'fancybox'})["data-fancybox-href"]
     images_url = 'https://www.jpl.nasa.gov'
     featured_img = images_url + relative_image_path
-    print(featured_img)
-
-    browser.quit()
 
     return featured_img
 
@@ -82,8 +73,6 @@ def scrapeMarsFacts():
     marsFacts_df = table[0]
     marsFacts_df.columns = ['Description', 'Value']
     htmlString = marsFacts_df.to_html()
-
-    browser.quit()
 
     return htmlString
 
