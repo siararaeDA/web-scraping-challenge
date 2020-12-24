@@ -18,13 +18,11 @@ def index():
 @app.route("/scrape")
 def scraper():
     marsInfo = mongo.db.marsInfo
-    # Run scrape functions and save the data
 
-    # Returns Dictionary of Title, Text 
-    newFromMars = scrapeMarsNews()
-    # Returns Image URL
-    spaceImage = scrapeSpaceImages()
-    # Returns HTML String of table
-    marsFacts = scrapeMarsFacts()
-    # Returns list of dictionaries of Title, Image URL
-    hemispheres = scrapeMarsHemispheres()
+    # Run scrape functions and save the data
+    marsData = scrape_mars.scrape()
+    marsInfo.update({}, marsData, upsert=True)
+    return redirect("/", code=302)
+
+if __name__ == "__main__":
+    app.run(debug=True)
