@@ -14,7 +14,9 @@ def initBrowser():
 ##############################################
 # Function to scrape Mars News
 ##############################################
-def scrapeMarsNews(browser):
+def scrapeMarsNews():
+    browser = initBrowser()
+
     url = "https://mars.nasa.gov/news/"
     browser.visit(url)
 
@@ -36,12 +38,16 @@ def scrapeMarsNews(browser):
     print('--------------------------')
     print(newsText)
 
+    browser.quit()
+
     return marsNews
 
 ##############################################
 # Function to scrape Mars Space Images
 ##############################################
-def scrapeSpaceImages(browser):
+def scrapeSpaceImages():
+    browser = initBrowser()
+
     url = "https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars"
     browser.visit(url)
 
@@ -55,12 +61,16 @@ def scrapeSpaceImages(browser):
     featured_img = images_url + relative_image_path
     print(featured_img)
 
+    browser.quit()
+
     return featured_img
 
 ##############################################
 # Function to scrape Mars Facts
 ##############################################
-def scrapeMarsFacts(browser):
+def scrapeMarsFacts():
+    browser = initBrowser()
+
     url = "https://space-facts.com/mars/"
     browser.visit(url)
 
@@ -73,12 +83,16 @@ def scrapeMarsFacts(browser):
     marsFacts_df.columns = ['Description', 'Value']
     htmlString = marsFacts_df.to_html()
 
+    browser.quit()
+
     return htmlString
 
 ##############################################
 # Function to scrape Mars Hemispheres
 ##############################################
-def scrapeMarsHemispheres(browser):
+def scrapeMarsHemispheres():
+    browser = initBrowser()
+
     url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
     browser.visit(url)
 
@@ -106,20 +120,32 @@ def scrapeMarsHemispheres(browser):
         imageLink = baseURL + imageSoup.find('img', {'class': 'wide-image'})['src']
     
         images.append({'title': title, 'img_url': imageLink})
+
+    browser.quit()
     
     return images
 
 ##############################################
 #      Main
 ##############################################
+def scrape():
+    # Dictionary of Title, Text 
+    newsFromMars = scrapeMarsNews()
+    # Image URL
+    spaceImage = scrapeSpaceImages()
+    # HTML String of table
+    marsFacts = scrapeMarsFacts()
+    # List of dictionaries of Title, Image URL
+    hemispheres = scrapeMarsHemispheres()
 
-browser = initBrowser()
+    # Store all of the data in one dictionary
+    marsInfoDict = {
+        'newsTitle': newsFromMars['Title'],
+        'newsText': newsFromMars['Text'],
+        'featuredImgURL': spaceImage,
+        'htmlFactsTable': marsFacts,
+        'hemisphereImages': hemispheres
+    }
 
-# Dictionary of Title, Text 
-newFromMars = scrapeMarsNews(browser)
-# Image URL
-spaceImage = scrapeSpaceImages(browser)
-# HTML String of table
-marsFacts = scrapeMarsFacts(browser)
-# List of dictionaries of Title, Image URL
-hemispheres = scrapeMarsHemispheres(browser)
+    return marsInfoDict
+
