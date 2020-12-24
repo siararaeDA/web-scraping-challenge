@@ -34,6 +34,8 @@ def scrapeMarsNews():
 
     marsNews = {'Title': newsTitle, 'Text': newsText}
 
+    browser.quit()
+    
     return marsNews
 
 ##############################################
@@ -54,6 +56,8 @@ def scrapeSpaceImages():
     images_url = 'https://www.jpl.nasa.gov'
     featured_img = images_url + relative_image_path
 
+    browser.quit()
+
     return featured_img
 
 ##############################################
@@ -73,6 +77,8 @@ def scrapeMarsFacts():
     marsFacts_df = table[0]
     marsFacts_df.columns = ['Description', 'Value']
     htmlString = marsFacts_df.to_html()
+
+    browser.quit()
 
     return htmlString
 
